@@ -45,9 +45,8 @@ const checkCarPayload = async (req, res, next) => {
 const checkVinNumberValid = (req, res, next) => {
   // HOKUS POKUS
   let isValidVin = vinValidator.validate(req.body.vin);
-
   if (!isValidVin) {
-    res.status(400).json({ message: `${req.body.vin} is invalid` });
+    res.status(400).json({ message: `vin ${req.body.vin} is invalid` });
   } else {
     next();
   }
@@ -56,9 +55,9 @@ const checkVinNumberValid = (req, res, next) => {
 const checkVinNumberUnique = async (req, res, next) => {
   // HOKUS POKUS
   try {
-    let isExist = db("cars").where("vin", req.body.vin).first();
+    let isExist = await db("cars").where("vin", req.body.vin).first();
     if (isExist) {
-      res.status(400).json({ message: `${req.body.vin} already exists` });
+      res.status(400).json({ message: `vin ${req.body.vin} already exists` });
     } else {
       next();
     }
